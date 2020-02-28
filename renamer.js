@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 
 const newLineChar = require('os').EOL;
-var filesCounter = 1;
 
 fs.writeFile('renamed.txt', '', (err) => {
   if (err) throw err;
@@ -12,14 +11,16 @@ fs.readdir('./', (err, files) => {
   if (err) throw err;
 
   files.forEach((file) => {
+    let fileCounter = 1;
+
     if (path.extname(file) === '.mp4') {
-      let fileName = filesCounter + '. ' + file;
+      const fileName = `${fileCounter}. ${file}`;
 
-      fs.appendFileSync('renamed.txt', `${newLineChar}${fileName}`);
-      fs.renameSync('./' + file, './' + filesCounter + '.mp4');
+      fs.appendFileSync('renamed.txt', `${fileName}${newLineChar}`);
+      fs.renameSync(`./${file}`, `./${fileCounter}.mp4`);
 
-      filesCounter++;
-      console.log(fileName + ' processed!');
+      fileCounter++;
+      console.log(`${fileName} processed!`);
     };
   });
 });
